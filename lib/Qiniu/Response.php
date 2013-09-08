@@ -11,7 +11,6 @@ class Response
     public $body;
     public $data;
     public $error;
-    public $response;
 
     /**
      * @param string      $response
@@ -22,7 +21,6 @@ class Response
         if (is_string($response)) {
             $this->parseResponse($response);
         }
-        $this->response = $response;
         $this->error = $error;
     }
 

@@ -67,7 +67,7 @@ class Client
      * @param string $path
      * @param string $key
      * @throws \InvalidArgumentException
-     * @return bool|Response
+     * @return bool|Result
      */
     public function uploadFile($path, $key)
     {
@@ -80,7 +80,7 @@ class Client
      *
      * @param string $string
      * @param string $key
-     * @return bool|Response
+     * @return bool|Result
      */
     public function upload($string, $key)
     {
@@ -91,7 +91,7 @@ class Client
      * Get file stats
      *
      * @param string $key
-     * @return bool|Response
+     * @return bool|Result
      */
     public function stat($key)
     {
@@ -104,7 +104,7 @@ class Client
      *
      * @param string $key
      * @param string $new_key
-     * @return bool|Response
+     * @return bool|Result
      */
     public function move($key, $new_key)
     {
@@ -117,7 +117,7 @@ class Client
      *
      * @param string $key
      * @param string $new_key
-     * @return bool|Response
+     * @return bool|Result
      */
     public function copy($key, $new_key)
     {
@@ -129,7 +129,7 @@ class Client
      * Delete file
      *
      * @param string $key
-     * @return bool|Response
+     * @return bool|Result
      */
     public function delete($key)
     {
@@ -140,7 +140,7 @@ class Client
     /**
      *
      * @param $prefix
-     * @return bool|Response
+     * @return bool|Result
      */
     public function ls($prefix)
     {
@@ -153,7 +153,7 @@ class Client
      * Get image info
      *
      * @param string $key
-     * @return Response
+     * @return Result
      */
     public function imageInfo($key)
     {
@@ -164,7 +164,7 @@ class Client
      * Get exif info
      *
      * @param string $key
-     * @return Response
+     * @return Result
      */
     public function exif($key)
     {
@@ -176,7 +176,7 @@ class Client
      *
      * @param string $key
      * @param array  $options
-     * @return Response
+     * @return Result
      */
     public function imageView($key, array $options)
     {
@@ -251,12 +251,13 @@ class Client
      *
      * @param string $key
      * @param string $type
-     * @return Response
+     * @return Result
      */
     protected function imageRequest($key, $type)
     {
         $url = $this->options['base_url'] . '/' . $key . '?' . $type;
-        return Request::create($url)->get();
+        $request = Request::create($url);
+        return new Result($request->get(), $request);
     }
 
     /**
@@ -264,7 +265,7 @@ class Client
      *
      * @param string $uri
      * @param string $host
-     * @return bool|Response
+     * @return bool|Result
      */
     protected function operateRequest($uri, $host = null)
     {
@@ -276,7 +277,7 @@ class Client
             'content-type' => 'application/x-www-form-urlencoded'
         ));
         $request->header('authorization', 'QBox ' . $token);
-        return $request->send();
+        return new Result($request->send(), $request);
     }
 
     /**
@@ -285,7 +286,7 @@ class Client
      * @param string       $body
      * @param string|array $key
      * @param array        $policy
-     * @return bool|Response
+     * @return bool|Result
      */
     public function uploadRequest($body, $key, $policy = null)
     {
@@ -320,6 +321,6 @@ class Client
                 'key'   => $options['key']
             )
         ))->file($body, basename($options['filename'] ? $options['filename'] : $options['key']));
-        return $request->send();
+        return new Result($request->send(), $request);
     }
 }
