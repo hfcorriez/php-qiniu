@@ -53,6 +53,11 @@ Qiniu\Result Object
                 [mimeType] => text/html
                 [putTime] => 13707100228731119
             )
+    [debug] => Array
+            (
+                [log] => BDT;BDT;LBD
+                [id] => zxwAAMj4OP6_7yET
+            )
 )
 ```
 
