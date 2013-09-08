@@ -112,7 +112,7 @@ $res = $client->stat('index.html');
 // 复制文件
 $res = $client->copy('index.html', 'index.html.new');
 
-// 删除文件
+// 移动文件
 $res = $client->move('index.html.new', 'index1.html');
 
 // 删除文件
