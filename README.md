@@ -28,15 +28,6 @@ $client = \Qiniu\Qiniu::create(array(
 // 查看文件状态
 $res = $client->stat('index.html');
 
-// 复制文件
-$res = $client->copy('index.html', 'index.html.new');
-
-// 删除文件
-$res = $client->move('index.html.new', 'index1.html');
-
-// 删除文件
-$res = $client->delete('index1.html');
-
 print_r($res);
 ```
 
@@ -83,14 +74,6 @@ if ($res->ok()) {
 ## 上传文件
 
 ```php
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-$client = \Qiniu\Qiniu::create(array(
-    'access_key' => '<!>',
-    'secret_key' => '<!>',
-    'bucket'     => '<!>'
-));
-
 // 上传文件
 $res = $client->uploadFile('/home/hfcorriez/Code/index.html', 'index.html');
 
@@ -103,14 +86,6 @@ print_r($res);
 ## 文件操作
 
 ```php
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-$client = \Qiniu\Qiniu::create(array(
-    'access_key' => '<!>',
-    'secret_key' => '<!>',
-    'bucket'     => '<!>'
-));
-
 // 查看文件状态
 $res = $client->stat('index.html');
 
