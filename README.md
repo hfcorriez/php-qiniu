@@ -2,6 +2,8 @@
 
 [七牛云存储](http://qiniu.com)非官方SDK，采用[PSR规范](https://github.com/hfcorriez/fig-standards)，支持[Composer](http://getcomposer.org)安装
 
+`开发中...`
+
 # 安装
 
 添加 `"pagon/cluster": "*"` 到 [`composer.json`](http://getcomposer.org).
@@ -12,7 +14,7 @@ composer.phar install
 
 # 使用
 
-## 简单方式
+## 基本用法
 
 ```php
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -25,6 +27,15 @@ $client = \Qiniu\Qiniu::create(array(
 
 // 查看文件状态
 $res = $client->stat('index.html');
+
+// 复制文件
+$res = $client->copy('index.html', 'index.html.new');
+
+// 删除文件
+$res = $client->move('index.html.new', 'index1.html');
+
+// 删除文件
+$res = $client->delete('index1.html');
 
 print_r($res);
 ```
@@ -44,6 +55,83 @@ Qiniu\Result Object
             )
 )
 ```
+
+推荐用法
+
+```php
+if ($res->ok()) {
+    // 成功上传或者操作
+
+    // 获取返回的数据
+    $data = $res->data; // Or $res->toArray()
+
+    //做一些事情
+} else {
+    // 失败，获取失败信息
+    $res->error;
+
+    // 七牛的Debug头信息
+    $res->debug;
+}
+```
+
+## 上传文件
+
+```php
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$client = \Qiniu\Qiniu::create(array(
+    'access_key' => '<!>',
+    'secret_key' => '<!>',
+    'bucket'     => '<!>'
+));
+
+// 上传文件
+$res = $client->uploadFile('/home/hfcorriez/Code/index.html', 'index.html');
+
+// 上传字符串
+$res = $client->upload('I am Qiniu SDK', 'readme.txt');
+
+print_r($res);
+```
+
+## 文件操作
+
+```php
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$client = \Qiniu\Qiniu::create(array(
+    'access_key' => '<!>',
+    'secret_key' => '<!>',
+    'bucket'     => '<!>'
+));
+
+// 查看文件状态
+$res = $client->stat('index.html');
+
+// 复制文件
+$res = $client->copy('index.html', 'index.html.new');
+
+// 删除文件
+$res = $client->move('index.html.new', 'index1.html');
+
+// 删除文件
+$res = $client->delete('index1.html');
+
+print_r($res);
+```
+
+## 图片查看
+
+> 进行中...
+
+## 图片生成
+
+> 进行中...
+
+## 断点续传
+
+> 进行中...
 
 # License
 
