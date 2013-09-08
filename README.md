@@ -6,7 +6,7 @@
 
 # 安装
 
-添加 `"pagon/cluster": "*"` 到 [`composer.json`](http://getcomposer.org).
+添加 `"qiniu/qiniu": "*"` 到 [`composer.json`](http://getcomposer.org).
 
 ```
 composer.phar install
