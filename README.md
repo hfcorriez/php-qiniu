@@ -254,7 +254,7 @@ Array
 $url = $client->imageView('jobs.jpg', array("mode" => 1, "width" => 100, "height" => 100, "q" => 50, "format" => 'png'));
 
 /*
-url:
+$url:
 
 http://php-sdk.qiniudn.com/jobs.jpg?imageView/1/w/100/h/100/q/50/format/png
 */
@@ -272,7 +272,7 @@ $res = $client->imageMogr('jobs.jpg', array(
 ));
 
 /*
-url:
+$url:
 
 http://php-sdk.qiniudn.com/jobs.jpg?imageMogr/v2/auto-orient/thumbnail/!50p/gravity/NorthWest/quality/50/rotate/-50/format/gif
 */
