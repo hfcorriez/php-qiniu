@@ -148,14 +148,14 @@ $res->data:
 ### 移动文件
 
 ```php
-$res = $client->move('jobs.jpg.new', 'index1.html');
+$res = $client->move('jobs.jpg.new', 'jobs.jpg');
 
 /*
 $res->data:
 
 [data] => Array
 (
-    [url] => http://php-sdk.qiniudn.com/index1.html
+    [url] => http://php-sdk.qiniudn.com/jobs.jpg
 )
 */
 ```
@@ -163,14 +163,14 @@ $res->data:
 ### 删除文件
 
 ```php
-$res = $client->delete('index1.html');
+$res = $client->delete('jobs.jpg');
 
 /*
 $res->data:
 
 [data] => Array
 (
-    [url] => http://php-sdk.qiniudn.com/index1.html
+    [url] => http://php-sdk.qiniudn.com/jobs.jpg
 )
 */
 ```
