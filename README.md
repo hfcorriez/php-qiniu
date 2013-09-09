@@ -93,7 +93,7 @@ Array
 
 ### 上传字符串
 
-```
+```php
 $res = $client->upload('I am Qiniu SDK', 'readme.txt');
 
 /*
@@ -132,7 +132,7 @@ $res->data:
 
 ### 复制文件
 
-```
+```php
 $res = $client->copy('index.html', 'index.html.new');
 
 /*
@@ -147,7 +147,7 @@ $res->data:
 
 ### 移动文件
 
-```
+```php
 $res = $client->move('index.html.new', 'index1.html');
 
 /*
@@ -162,7 +162,7 @@ $res->data:
 
 ### 删除文件
 
-```
+```php
 $res = $client->delete('index1.html');
 
 /*
@@ -177,7 +177,7 @@ $res->data:
 
 ### 筛选文件
 
-```
+```php
 $res = $client->ls();
 
 /*
