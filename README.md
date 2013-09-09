@@ -12,6 +12,25 @@
 composer.phar install
 ```
 
+# 引导
+
+- [基本用法](#基本用法)
+- [上传](#上传)
+  - [上传文件](#上传文件)
+  - [上传字符串](#上传字符串)
+- [基本操作]
+  - [查看文件](#查看文件)
+  - [复制文件](#复制文件)
+  - [移动文件](#移动文件)
+  - [删除文件](#删除文件)
+  - [筛选文件](#筛选文件)
+- [图片操作]
+  - [查看图片信息](#查看图片信息)
+  - [查看图片Exif](#查看图片exif)
+- [图片生成](#图片生成)
+  - [缩略图生成](#缩略图生成)
+  - [高级图片处理](#高级图片处理)
+
 # 使用
 
 ## 基本用法
@@ -204,6 +223,8 @@ Array
 
 ### 查看图片信息
 
+查看图片的信息，信息参数介绍参见[七牛官方文档](http://docs.qiniu.com/api/v6/image-process.html#imageInfo)
+
 ```php
 $res = $client->imageInfo('qn.jpeg');
 
@@ -221,6 +242,8 @@ Array
 ```
 
 ### 查看图片Exif
+
+EXIF (Exchangeable image file format),是专门为数码相机的照片设定的可交换图像文件格式。详情参见[EXIF](http://zh.wikipedia.org/wiki/EXIF)
 
 ```php
 $res = $client->exif('qn.jpeg');
@@ -248,7 +271,9 @@ Array
 
 ## 图片生成
 
-### ImageView
+### 缩略图生成
+
+参数列表请参照[七牛官方文档](http://docs.qiniu.com/api/v6/image-process.html#imageMogr)
 
 ```php
 $url = $client->imageView('jobs.jpg', array("mode" => 1, "width" => 100, "height" => 100, "q" => 50, "format" => 'png'));
@@ -260,7 +285,9 @@ http://php-sdk.qiniudn.com/jobs.jpg?imageView/1/w/100/h/100/q/50/format/png
 */
 ```
 
-### ImageMock
+### 高级图片处理
+
+包括(缩略、裁剪、旋转、转化)，参数列表请参照[七牛官方文档](http://docs.qiniu.com/api/v6/image-process.html#imageMogr)
 
 ```php
 $res = $client->imageMogr('jobs.jpg', array(
