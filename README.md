@@ -43,6 +43,7 @@ Qiniu\Result Object
                 [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
                 [mimeType] => text/html
                 [putTime] => 13707100228731119
+                [url] => http://php-sdk.qiniudn.com/index.html
             )
     [debug] => Array
             (
@@ -77,10 +78,30 @@ if ($res->ok()) {
 // 上传文件
 $res = $client->uploadFile('/home/hfcorriez/Code/index.html', 'index.html');
 
+/*
+$res->data:
+
+Array
+(
+    [key] => 4276
+    [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
+    [url] => http://phptest.qiniudn.com/index.html
+)
+*/
+
 // 上传字符串
 $res = $client->upload('I am Qiniu SDK', 'readme.txt');
 
-print_r($res);
+/*
+$res->data:
+
+Array
+(
+    [key] => 4276
+    [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
+    [url] => http://phptest.qiniudn.com/readme.txt
+)
+*/
 ```
 
 ## 文件操作
@@ -89,16 +110,54 @@ print_r($res);
 // 查看文件状态
 $res = $client->stat('index.html');
 
+/*
+$res->data:
+
+[data] => Array
+(
+    [fsize] => 326
+    [hash] => Fp7n4jg1oVeWNyGXP5a2hz_KCSZH
+    [mimeType] => application/x-httpd-php
+    [putTime] => 13787406554413228
+    [url] => http://php-sdk.qiniudn.com/index.html
+)
+*/
+
 // 复制文件
 $res = $client->copy('index.html', 'index.html.new');
+
+/*
+$res->data:
+
+[data] => Array
+(
+    [url] => http://php-sdk.qiniudn.com/index.html.new
+)
+*/
 
 // 移动文件
 $res = $client->move('index.html.new', 'index1.html');
 
+/*
+$res->data:
+
+[data] => Array
+(
+    [url] => http://php-sdk.qiniudn.com/index1.html
+)
+*/
+
 // 删除文件
 $res = $client->delete('index1.html');
 
-print_r($res);
+/*
+$res->data:
+
+[data] => Array
+(
+    [url] => http://php-sdk.qiniudn.com/index1.html
+)
+*/
 ```
 
 ## 图片查看

@@ -96,7 +96,7 @@ class Client
     public function stat($key)
     {
         $uri = '/stat/' . Util::uriEncode("{$this->options['bucket']}:$key");
-        return $this->operateRequest($uri);
+        return $this->operateRequest($uri, $key);
     }
 
     /**
@@ -109,7 +109,7 @@ class Client
     public function move($key, $new_key)
     {
         $uri = '/move/' . Util::uriEncode("{$this->options['bucket']}:$key") . '/' . Util::uriEncode("{$this->options['bucket']}:$new_key");
-        return $this->operateRequest($uri);
+        return $this->operateRequest($uri, $new_key);
     }
 
     /**
@@ -122,7 +122,7 @@ class Client
     public function copy($key, $new_key)
     {
         $uri = '/copy/' . Util::uriEncode("{$this->options['bucket']}:$key") . '/' . Util::uriEncode("{$this->options['bucket']}:$new_key");
-        return $this->operateRequest($uri);
+        return $this->operateRequest($uri, $new_key);
     }
 
     /**
@@ -134,7 +134,7 @@ class Client
     public function delete($key)
     {
         $uri = '/delete/' . Util::uriEncode("{$this->options['bucket']}:$key");
-        return $this->operateRequest($uri);
+        return $this->operateRequest($uri, $key);
     }
 
     /**
@@ -146,7 +146,7 @@ class Client
     {
         $query = array('bucket' => $this->options['bucket']) + (is_array($prefix) ? $prefix : array('prefix' => $prefix));
         $uri = '/list?' . http_build_query($query);
-        return $this->operateRequest($uri, $this->options['rsf_url']);
+        return $this->operateRequest($uri, null, $this->options['rsf_url']);
     }
 
     /**
@@ -264,10 +264,11 @@ class Client
      * Operate request
      *
      * @param string $uri
+     * @param string $key
      * @param string $host
      * @return bool|Result
      */
-    protected function operateRequest($uri, $host = null)
+    protected function operateRequest($uri, $key, $host = null)
     {
         $url = ($host ? $host : $this->options['rs_url']) . $uri;
         $token = $this->mac->signRequest($uri);
@@ -277,7 +278,11 @@ class Client
             'content-type' => 'application/x-www-form-urlencoded'
         ));
         $request->header('authorization', 'QBox ' . $token);
-        return new Result($request->send(), $request);
+        $result = new Result($request->send(), $request);
+        if ($result->ok() && $key) {
+            $result->data['url'] = $this->options['base_url'] . '/' . $key;
+        }
+        return $result;
     }
 
     /**
@@ -321,6 +326,10 @@ class Client
                 'key'   => $options['key']
             )
         ))->file($body, basename($options['filename'] ? $options['filename'] : $options['key']));
-        return new Result($request->send(), $request);
+        $result = new Result($request->send(), $request);
+        if ($result->ok()) {
+            $result->data['url'] = $this->options['base_url'] . '/' . $result->data['key'];
+        }
+        return $result;
     }
 }
