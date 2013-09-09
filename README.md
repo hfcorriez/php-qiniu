@@ -86,7 +86,7 @@ Array
 (
     [key] => 4276
     [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
-    [url] => http://phptest.qiniudn.com/index.html
+    [url] => http://php-sdk.qiniudn.com/index.html
 )
 */
 ```
@@ -103,7 +103,7 @@ Array
 (
     [key] => 4276
     [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
-    [url] => http://phptest.qiniudn.com/readme.txt
+    [url] => http://php-sdk.qiniudn.com/readme.txt
 )
 */
 ```
