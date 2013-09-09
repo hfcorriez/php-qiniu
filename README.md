@@ -39,9 +39,9 @@ Qiniu\Result Object
     [error] =>
     [data] => Array
             (
-                [fsize] => 4276
-                [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
-                [mimeType] => text/html
+                [fsize] => 2425435
+                [hash] => Fqng6_0hUF8Q-POxmWNi8JD9VRmy
+                [mimeType] => image/jpeg
                 [putTime] => 13707100228731119
                 [url] => http://php-sdk.qiniudn.com/jobs.jpg
             )
@@ -121,9 +121,9 @@ $res->data:
 
 [data] => Array
 (
-    [fsize] => 326
-    [hash] => Fp7n4jg1oVeWNyGXP5a2hz_KCSZH
-    [mimeType] => application/x-httpd-php
+    [fsize] => 2425435
+    [hash] => Fqng6_0hUF8Q-POxmWNi8JD9VRmy
+    [mimeType] => image/jpeg
     [putTime] => 13787406554413228
     [url] => http://php-sdk.qiniudn.com/jobs.jpg
 )
@@ -189,11 +189,11 @@ Array
     (
         [0] => Array
         (
-            [fsize] => 326
+            [fsize] => 2425435
             [putTime] => 13787406554413228
             [key] => jobs.jpg
-            [hash] => Fp7n4jg1oVeWNyGXP5a2hz_KCSZH
-            [mimeType] => application/x-httpd-php
+            [hash] => Fqng6_0hUF8Q-POxmWNi8JD9VRmy
+            [mimeType] => image/jpeg
         )
     )
 )
