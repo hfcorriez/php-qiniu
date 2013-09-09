@@ -26,7 +26,7 @@ $client = \Qiniu\Qiniu::create(array(
 ));
 
 // 查看文件状态
-$res = $client->stat('index.html');
+$res = $client->stat('jobs.jpg');
 
 print_r($res);
 ```
@@ -43,7 +43,7 @@ Qiniu\Result Object
                 [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
                 [mimeType] => text/html
                 [putTime] => 13707100228731119
-                [url] => http://php-sdk.qiniudn.com/index.html
+                [url] => http://php-sdk.qiniudn.com/jobs.jpg
             )
     [debug] => Array
             (
@@ -77,7 +77,7 @@ if ($res->ok()) {
 ### 上传文件
 
 ```php
-$res = $client->uploadFile('/home/hfcorriez/Code/index.html', 'index.html');
+$res = $client->uploadFile('/home/hfcorriez/Code/jobs.jpg', 'jobs.jpg');
 
 /*
 $res->data:
@@ -86,7 +86,7 @@ Array
 (
     [key] => 4276
     [hash] => FpLJ7yTujtJ85yU6QLA79ZaR3kKg
-    [url] => http://php-sdk.qiniudn.com/index.html
+    [url] => http://php-sdk.qiniudn.com/jobs.jpg
 )
 */
 ```
@@ -114,7 +114,7 @@ Array
 
 ```php
 // 查看文件状态
-$res = $client->stat('index.html');
+$res = $client->stat('jobs.jpg');
 
 /*
 $res->data:
@@ -125,7 +125,7 @@ $res->data:
     [hash] => Fp7n4jg1oVeWNyGXP5a2hz_KCSZH
     [mimeType] => application/x-httpd-php
     [putTime] => 13787406554413228
-    [url] => http://php-sdk.qiniudn.com/index.html
+    [url] => http://php-sdk.qiniudn.com/jobs.jpg
 )
 */
 ```
@@ -133,14 +133,14 @@ $res->data:
 ### 复制文件
 
 ```php
-$res = $client->copy('index.html', 'index.html.new');
+$res = $client->copy('jobs.jpg', 'jobs.jpg.new');
 
 /*
 $res->data:
 
 [data] => Array
 (
-    [url] => http://php-sdk.qiniudn.com/index.html.new
+    [url] => http://php-sdk.qiniudn.com/jobs.jpg.new
 )
 */
 ```
@@ -148,7 +148,7 @@ $res->data:
 ### 移动文件
 
 ```php
-$res = $client->move('index.html.new', 'index1.html');
+$res = $client->move('jobs.jpg.new', 'index1.html');
 
 /*
 $res->data:
@@ -191,7 +191,7 @@ Array
         (
             [fsize] => 326
             [putTime] => 13787406554413228
-            [key] => index.html
+            [key] => jobs.jpg
             [hash] => Fp7n4jg1oVeWNyGXP5a2hz_KCSZH
             [mimeType] => application/x-httpd-php
         )
