@@ -259,7 +259,6 @@ class Request
         if (($response = curl_exec($ch)) === false) {
             $error = curl_error($ch);
         }
-        curl_close($ch);
         return $this->response = new Response($response, $error);
     }
 

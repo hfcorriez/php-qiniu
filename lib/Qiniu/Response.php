@@ -33,6 +33,11 @@ class Response
     {
         $body_pos = strpos($response, "\r\n\r\n");
         $header_string = substr($response, 0, $body_pos);
+        if ($header_string == 'HTTP/1.1 100 Continue') {
+            $head_pos = $body_pos + 4;
+            $body_pos = strpos($response, "\r\n\r\n", $head_pos);
+            $header_string = substr($response, $head_pos, $body_pos - $head_pos);
+        }
         $header_lines = explode("\r\n", $header_string);
 
         $headers = array();

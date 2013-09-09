@@ -72,10 +72,11 @@ if ($res->ok()) {
 }
 ```
 
-## 上传文件
+## 上传
+
+### 上传文件
 
 ```php
-// 上传文件
 $res = $client->uploadFile('/home/hfcorriez/Code/index.html', 'index.html');
 
 /*
@@ -88,8 +89,11 @@ Array
     [url] => http://phptest.qiniudn.com/index.html
 )
 */
+```
 
-// 上传字符串
+### 上传字符串
+
+```
 $res = $client->upload('I am Qiniu SDK', 'readme.txt');
 
 /*
@@ -105,6 +109,8 @@ Array
 ```
 
 ## 文件操作
+
+### 查看文件
 
 ```php
 // 查看文件状态
@@ -122,8 +128,11 @@ $res->data:
     [url] => http://php-sdk.qiniudn.com/index.html
 )
 */
+```
 
-// 复制文件
+### 复制文件
+
+```
 $res = $client->copy('index.html', 'index.html.new');
 
 /*
@@ -134,8 +143,11 @@ $res->data:
     [url] => http://php-sdk.qiniudn.com/index.html.new
 )
 */
+```
 
-// 移动文件
+### 移动文件
+
+```
 $res = $client->move('index.html.new', 'index1.html');
 
 /*
@@ -146,8 +158,11 @@ $res->data:
     [url] => http://php-sdk.qiniudn.com/index1.html
 )
 */
+```
 
-// 删除文件
+### 删除文件
+
+```
 $res = $client->delete('index1.html');
 
 /*
@@ -160,13 +175,108 @@ $res->data:
 */
 ```
 
+### 筛选文件
+
+```
+$res = $client->ls();
+
+/*
+$res->data:
+
+Array
+(
+    [items] => Array
+    (
+        [0] => Array
+        (
+            [fsize] => 326
+            [putTime] => 13787406554413228
+            [key] => index.html
+            [hash] => Fp7n4jg1oVeWNyGXP5a2hz_KCSZH
+            [mimeType] => application/x-httpd-php
+        )
+    )
+)
+*/
+```
+
 ## 图片查看
 
-> 进行中...
+### 查看图片信息
+
+```php
+$res = $client->imageInfo('qn.jpeg');
+
+/*
+$res->data:
+
+Array
+(
+    [format] => jpeg
+    [width] => 640
+    [height] => 423
+    [colorModel] => ycbcr
+)
+*/
+```
+
+### 查看图片Exif
+
+```php
+$res = $client->exif('qn.jpeg');
+
+/*
+$res->data:
+
+Array
+(
+    [ApertureValue] => Array
+        (
+            [val] => 2.53 EV (f/2.4)
+            [type] => 5
+        )
+
+    [BrightnessValue] => Array
+        (
+            [val] => 5.31 EV (135.85 cd/m^2)
+            [type] => 10
+        )
+    ...
+)
+*/
+```
 
 ## 图片生成
 
-> 进行中...
+### ImageView
+
+```php
+$url = $client->imageView('jobs.jpg', array("mode" => 1, "width" => 100, "height" => 100, "q" => 50, "format" => 'png'));
+
+/*
+url:
+
+http://php-sdk.qiniudn.com/jobs.jpg?imageView/1/w/100/h/100/q/50/format/png
+*/
+```
+
+### ImageMock
+
+```php
+$res = $client->imageMogr('jobs.jpg', array(
+    "thumbnail" => '!50p',
+    "gravity"   => 'NorthWest',
+    "quality"   => 50,
+    "rotate"    => -50,
+    "format"    => 'gif'
+));
+
+/*
+url:
+
+http://php-sdk.qiniudn.com/jobs.jpg?imageMogr/v2/auto-orient/thumbnail/!50p/gravity/NorthWest/quality/50/rotate/-50/format/gif
+*/
+```
 
 ## 断点续传
 

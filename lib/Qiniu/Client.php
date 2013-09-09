@@ -142,7 +142,7 @@ class Client
      * @param $prefix
      * @return bool|Result
      */
-    public function ls($prefix)
+    public function ls($prefix = '')
     {
         $query = array('bucket' => $this->options['bucket']) + (is_array($prefix) ? $prefix : array('prefix' => $prefix));
         $uri = '/list?' . http_build_query($query);
