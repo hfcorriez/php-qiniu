@@ -126,7 +126,7 @@ class Response
      *
      * @return bool
      */
-    public function isOk()
+    public function ok()
     {
         return $this->code === 200;
     }
@@ -136,7 +136,7 @@ class Response
      *
      * @return bool
      */
-    public function isSuccessful()
+    public function success()
     {
         return $this->code >= 200 && $this->code < 300;
     }
@@ -146,7 +146,7 @@ class Response
      *
      * @return bool
      */
-    public function isRedirect()
+    public function redirect()
     {
         return in_array($this->code, array(301, 302, 303, 307));
     }
@@ -156,7 +156,7 @@ class Response
      *
      * @return bool
      */
-    public function isForbidden()
+    public function forbidden()
     {
         return $this->code === 403;
     }
@@ -166,7 +166,7 @@ class Response
      *
      * @return bool
      */
-    public function isNotFound()
+    public function notFound()
     {
         return $this->code === 404;
     }
@@ -176,7 +176,7 @@ class Response
      *
      * @return bool
      */
-    public function isClientError()
+    public function clientError()
     {
         return $this->code >= 400 && $this->code < 500;
     }
@@ -186,7 +186,7 @@ class Response
      *
      * @return bool
      */
-    public function isServerError()
+    public function serverError()
     {
         return $this->code >= 500 && $this->code < 600;
     }

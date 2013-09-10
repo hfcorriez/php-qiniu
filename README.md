@@ -219,6 +219,102 @@ Array
 */
 ```
 
+## 批量操作
+
+```php
+$res = $client->batch()
+    ->stat('jobs.jpg')
+    ->copy('jobs.jpg', 'jobs.jpg.new')
+    ->move('jobs.jpg.new', 'jobs.jpg.old')
+    ->delete('jobs.jpg.old')
+    ->exec();
+
+/*
+$res:
+
+Qiniu\Result Object
+(
+    [error] =>
+    [data] => Array
+        (
+            [0] => Qiniu\Result Object
+                (
+                    [error] =>
+                    [data] => Array
+                        (
+                            [fsize] => 2425435
+                            [hash] => Fqng6_0hUF8Q-POxmWNi8JD9VRmy
+                            [mimeType] => image/jpeg
+                            [putTime] => 13787430682676023
+                            [url] => http://php-sdk.qiniudn.com/jobs.jpg
+                        )
+
+                    [response] =>
+                    [debug] => Array
+                        (
+                            [log] => MQ;MC/404;RS.mcd
+                            [id] => u00AAFaxXKXYfiIT
+                        )
+
+                )
+
+            [1] => Qiniu\Result Object
+                (
+                    [error] =>
+                    [data] => Array
+                        (
+                            [url] => http://php-sdk.qiniudn.com/jobs.jpg
+                        )
+
+                    [response] =>
+                    [debug] => Array
+                        (
+                            [log] => MQ;MC/404;RS.mcd
+                            [id] => u00AAFaxXKXYfiIT
+                        )
+
+                )
+
+            [2] => Qiniu\Result Object
+                (
+                    [error] =>
+                    [data] => Array
+                        (
+                            [url] => http://php-sdk.qiniudn.com/jobs.jpg.new
+                        )
+
+                    [response] =>
+                    [debug] => Array
+                        (
+                            [log] => MQ;MC/404;RS.mcd
+                            [id] => u00AAFaxXKXYfiIT
+                        )
+
+                )
+
+            [3] => Qiniu\Result Object
+                (
+                    [error] =>
+                    [data] => Array
+                        (
+                            [url] => http://php-sdk.qiniudn.com/jobs.jpg.old
+                        )
+
+                    [response] =>
+                    [debug] => Array
+                        (
+                            [log] => MQ;MC/404;RS.mcd
+                            [id] => u00AAFaxXKXYfiIT
+                        )
+
+                )
+
+        )
+        ...
+ )
+*/
+```
+
 ## 图片查看
 
 ### 查看图片信息
@@ -304,10 +400,6 @@ $url:
 http://php-sdk.qiniudn.com/jobs.jpg?imageMogr/v2/auto-orient/thumbnail/!50p/gravity/NorthWest/quality/50/rotate/-50/format/gif
 */
 ```
-
-## 断点续传
-
-> 进行中...
 
 # License
 

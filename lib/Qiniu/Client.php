@@ -43,6 +43,9 @@ class Client
         )
     );
 
+    protected $batch = false;
+    protected $batch_operators = array();
+
     /**
      * @var Mac
      */
@@ -91,12 +94,18 @@ class Client
      * Get file stats
      *
      * @param string $key
-     * @return bool|Result
+     * @return bool|Result|Client
      */
     public function stat($key)
     {
         $uri = '/stat/' . Util::uriEncode("{$this->options['bucket']}:$key");
-        return $this->operateRequest($uri, $key);
+
+        if ($this->batch) {
+            $this->batch_operators[] = array($uri, $key);
+            return $this;
+        } else {
+            return $this->operateRequest($uri, $key);
+        }
     }
 
     /**
@@ -104,12 +113,18 @@ class Client
      *
      * @param string $key
      * @param string $new_key
-     * @return bool|Result
+     * @return bool|Result|Client
      */
     public function move($key, $new_key)
     {
         $uri = '/move/' . Util::uriEncode("{$this->options['bucket']}:$key") . '/' . Util::uriEncode("{$this->options['bucket']}:$new_key");
-        return $this->operateRequest($uri, $new_key);
+
+        if ($this->batch) {
+            $this->batch_operators[] = array($uri, $key);
+            return $this;
+        } else {
+            return $this->operateRequest($uri, $new_key);
+        }
     }
 
     /**
@@ -117,24 +132,36 @@ class Client
      *
      * @param string $key
      * @param string $new_key
-     * @return bool|Result
+     * @return bool|Result|Client
      */
     public function copy($key, $new_key)
     {
         $uri = '/copy/' . Util::uriEncode("{$this->options['bucket']}:$key") . '/' . Util::uriEncode("{$this->options['bucket']}:$new_key");
-        return $this->operateRequest($uri, $new_key);
+
+        if ($this->batch) {
+            $this->batch_operators[] = array($uri, $key);
+            return $this;
+        } else {
+            return $this->operateRequest($uri, $new_key);
+        }
     }
 
     /**
      * Delete file
      *
      * @param string $key
-     * @return bool|Result
+     * @return bool|Result|Client
      */
     public function delete($key)
     {
         $uri = '/delete/' . Util::uriEncode("{$this->options['bucket']}:$key");
-        return $this->operateRequest($uri, $key);
+
+        if ($this->batch) {
+            $this->batch_operators[] = array($uri, $key);
+            return $this;
+        } else {
+            return $this->operateRequest($uri, $key);
+        }
     }
 
     /**
@@ -147,6 +174,63 @@ class Client
         $query = array('bucket' => $this->options['bucket']) + (is_array($prefix) ? $prefix : array('prefix' => $prefix));
         $uri = '/list?' . http_build_query($query);
         return $this->operateRequest($uri, null, $this->options['rsf_url']);
+    }
+
+    /**
+     * Start batch mode
+     *
+     * @return $this
+     */
+    public function batch()
+    {
+        $this->batch = true;
+        return $this;
+    }
+
+    /**
+     * Exec the batch
+     *
+     * @return Result
+     * @throws \RuntimeException
+     */
+    public function exec()
+    {
+        if (!$this->batch) throw new \RuntimeException("Not in batch mode!");
+
+        $ops = array();
+        foreach ($this->batch_operators as $operator) {
+            $ops[] = 'op=' . $operator[0];
+        }
+
+        $url = $this->options['rs_url'] . '/batch';
+
+        $request = Request::create(array(
+            'url'    => $url,
+            'body'   => join('&', $ops),
+            'method' => 'POST'
+        ));
+        $token = $this->mac->signRequest('/batch', join('&', $ops));
+        $request->header('authorization', 'QBox ' . $token);
+
+        $result = new Result($response = $request->send(), $request);
+        if (!$result->ok()) {
+            return $result;
+        }
+
+        if (is_array($result->data)) {
+            foreach ($result->data as $i => $item) {
+                $r = new Result($response, $request);
+                $r->data = isset($item['data']) ? $item['data'] : array();
+                if ($item['code'] !== 200) {
+                    $r->error = $item['error'];
+                }
+                $r->response = null;
+                $r->data['url'] = $this->options['base_url'] . '/' . $this->batch_operators[$i][1];
+                $result->data[$i] = $r;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -271,12 +355,12 @@ class Client
     protected function operateRequest($uri, $key, $host = null)
     {
         $url = ($host ? $host : $this->options['rs_url']) . $uri;
-        $token = $this->mac->signRequest($uri);
         $request = Request::create(array(
             'url'          => $url,
             'method'       => 'POST',
             'content-type' => 'application/x-www-form-urlencoded'
         ));
+        $token = $this->mac->signRequest($uri);
         $request->header('authorization', 'QBox ' . $token);
         $result = new Result($request->send(), $request);
         if ($result->ok() && $key) {
