@@ -7,10 +7,10 @@ class Response
     public $code;
     public $protocol;
     public $message;
-    public $headers;
     public $body;
-    public $data;
     public $error;
+    public $headers = array();
+    public $data = array();
 
     /**
      * @param string      $response
@@ -18,8 +18,10 @@ class Response
      */
     public function __construct($response, $error = false)
     {
-        if (is_string($response)) {
-            $this->parseResponse($response);
+        if (is_string($response) && ($parsed = $this->parse($response))) {
+            foreach ($parsed as $key => $value) {
+                $this->{$key} = $value;
+            }
         }
         $this->error = $error;
     }
@@ -28,8 +30,9 @@ class Response
      * Parse response
      *
      * @param $response
+     * @return array
      */
-    public function parseResponse($response)
+    public static function parse($response)
     {
         $body_pos = strpos($response, "\r\n\r\n");
         $header_string = substr($response, 0, $body_pos);
@@ -45,11 +48,13 @@ class Response
         $body = false;
         $protocol = null;
         $message = null;
+        $data = array();
 
         foreach ($header_lines as $index => $line) {
             if ($index === 0) {
                 preg_match("/^(HTTP\/\d\.\d) (\d{3}) (.*?)$/", $line, $match);
                 list(, $protocol, $code, $message) = $match;
+                $code = (int)$code;
                 continue;
             }
             list($key, $value) = explode(":", $line);
@@ -59,22 +64,26 @@ class Response
         if (is_numeric($code)) {
             $body_string = substr($response, $body_pos + 4);
             if (!empty($headers['transfer-encoding']) && $headers['transfer-encoding'] == 'chunked') {
-                $body = self::chuckDecode($body_string);
+                $body = self::decodeChunk($body_string);
             } else {
                 $body = (string)$body_string;
             }
             $result['header'] = $headers;
         }
 
-        $this->headers = $headers;
-        $this->body = $body;
-        $this->code = (int)$code;
-        $this->message = $message;
-        $this->protocol = $protocol;
-
-        if (strpos($this->headers['content-type'], 'json')) {
-            $this->data = json_decode($body, true);
+        // 自动解析数据
+        if (strpos($headers['content-type'], 'json')) {
+            $data = json_decode($body, true);
         }
+
+        return $code ? array(
+            'code'     => $code,
+            'body'     => $body,
+            'headers'  => $headers,
+            'message'  => $message,
+            'protocol' => $protocol,
+            'data'     => $data
+        ) : false;
     }
 
     /**
@@ -197,7 +206,7 @@ class Response
      * @param $str
      * @return string
      */
-    protected static function chuckDecode($str)
+    protected static function decodeChunk($str)
     {
         $body = '';
         while ($str) {
