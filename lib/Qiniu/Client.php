@@ -230,6 +230,10 @@ class Client
             }
         }
 
+        // Reset batch mode
+        $this->batch = false;
+        $this->batch_operators = array();
+
         return $result;
     }
 
