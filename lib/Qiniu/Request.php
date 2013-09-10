@@ -7,7 +7,7 @@ class Request
     /**
      * @var array Default options
      */
-    protected $options = array(
+    public $options = array(
         'method'   => 'GET',
         'url'      => null,
         'headers'  => array(),
