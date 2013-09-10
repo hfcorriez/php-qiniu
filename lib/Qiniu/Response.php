@@ -95,7 +95,7 @@ class Response
      *
      * @return bool
      */
-    public function isError()
+    public function error()
     {
         return !!$this->error;
     }
@@ -106,7 +106,7 @@ class Response
      *
      * @return bool
      */
-    public function isCachable()
+    public function cachable()
     {
         return $this->code >= 200 && $this->code < 300 || $this->code == 304;
     }
@@ -116,7 +116,7 @@ class Response
      *
      * @return bool
      */
-    public function isEmpty()
+    public function bare()
     {
         return in_array($this->code, array(201, 204, 304));
     }
